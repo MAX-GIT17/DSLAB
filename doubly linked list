@@ -1,0 +1,214 @@
+import java.util.Scanner;
+
+public class DoublyLinkedList {
+    // Node class
+    static class Node {
+        int data;
+        Node prev, next;
+
+        Node(int data) {
+            this.data = data;
+        }
+    }
+
+    Node head, tail;
+    int size = 0;
+
+    // Insertion functions
+    void insertAtBeginning(int value) {
+        Node newNode = new Node(value);
+        if (head == null)
+            head = tail = newNode;
+        else {
+            newNode.next = head;
+            head.prev = newNode;
+            head = newNode;
+        }
+        size++;
+        System.out.println(value + " inserted at beginning.");
+    }
+
+    void insertAtEnd(int value) {
+        Node newNode = new Node(value);
+        if (tail == null)
+            head = tail = newNode;
+        else {
+            tail.next = newNode;
+            newNode.prev = tail;
+            tail = newNode;
+        }
+        size++;
+        System.out.println(value + " inserted at end.");
+    }
+
+    void insertAtPosition(int pos, int value) {
+        if (pos < 1 || pos > size + 1) {
+            System.out.println("Invalid position!");
+            return;
+        }
+        if (pos == 1) {
+            insertAtBeginning(value);
+            return;
+        }
+        if (pos == size + 1) {
+            insertAtEnd(value);
+            return;
+        }
+        Node newNode = new Node(value);
+        Node temp = head;
+        for (int i = 1; i < pos - 1; i++)
+            temp = temp.next;
+
+        newNode.next = temp.next;
+        newNode.prev = temp;
+        temp.next.prev = newNode;
+        temp.next = newNode;
+
+        size++;
+        System.out.println(value + " inserted at position " + pos + ".");
+    }
+
+    // Deletion functions
+    void deleteAtBeginning() {
+        if (head == null) {
+            System.out.println("List is empty!");
+            return;
+        }
+        System.out.println(head.data + " deleted from beginning.");
+        if (head == tail)
+            head = tail = null;
+        else {
+            head = head.next;
+            head.prev = null;
+        }
+        size--;
+    }
+
+    void deleteAtEnd() {
+        if (tail == null) {
+            System.out.println("List is empty!");
+            return;
+        }
+        System.out.println(tail.data + " deleted from end.");
+        if (head == tail)
+            head = tail = null;
+        else {
+            tail = tail.prev;
+            tail.next = null;
+        }
+        size--;
+    }
+
+    void deleteAtPosition(int pos) {
+        if (pos < 1 || pos > size) {
+            System.out.println("Invalid position!");
+            return;
+        }
+        if (pos == 1) {
+            deleteAtBeginning();
+            return;
+        }
+        if (pos == size) {
+            deleteAtEnd();
+            return;
+        }
+        Node temp = head;
+        for (int i = 1; i < pos; i++)
+            temp = temp.next;
+
+        System.out.println(temp.data + " deleted from position " + pos + ".");
+        temp.prev.next = temp.next;
+        temp.next.prev = temp.prev;
+        size--;
+    }
+
+    // Display function
+    void display() {
+        if (head == null) {
+            System.out.println("List is empty!");
+            return;
+        }
+        System.out.print("List: ");
+        Node temp = head;
+        while (temp != null) {
+            System.out.print(temp.data + (temp.next != null ? " <-> " : ""));
+            temp = temp.next;
+        }
+        System.out.println();
+    }
+
+    // Main menu-driven program
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        DoublyLinkedList dll = new DoublyLinkedList();
+        int mainChoice, subChoice, value, pos;
+
+        do {
+            System.out.println("\n--- Doubly Linked List Menu ---");
+            System.out.println("1. Insertion");
+            System.out.println("2. Deletion");
+            System.out.println("3. Display");
+            System.out.println("0. Exit");
+            System.out.print("Enter your choice: ");
+            mainChoice = sc.nextInt();
+
+            switch (mainChoice) {
+                case 1: // INSERTION
+                    System.out.println("\nWhere to insert?");
+                    System.out.println("1. Beginning");
+                    System.out.println("2. End");
+                    System.out.println("3. Specific Position");
+                    System.out.print("Enter choice: ");
+                    subChoice = sc.nextInt();
+                    System.out.print("Enter value: ");
+                    value = sc.nextInt();
+
+                    if (subChoice == 1)
+                        dll.insertAtBeginning(value);
+                    else if (subChoice == 2)
+                        dll.insertAtEnd(value);
+                    else if (subChoice == 3) {
+                        System.out.print("Enter position: ");
+                        pos = sc.nextInt();
+                        dll.insertAtPosition(pos, value);
+                    } else
+                        System.out.println("Invalid sub-choice!");
+                    break;
+
+                case 2: // DELETION
+                    System.out.println("\nWhere to delete?");
+                    System.out.println("1. Beginning");
+                    System.out.println("2. End");
+                    System.out.println("3. Specific Position");
+                    System.out.print("Enter choice: ");
+                    subChoice = sc.nextInt();
+
+                    if (subChoice == 1)
+                        dll.deleteAtBeginning();
+                    else if (subChoice == 2)
+                        dll.deleteAtEnd();
+                    else if (subChoice == 3) {
+                        System.out.print("Enter position: ");
+                        pos = sc.nextInt();
+                        dll.deleteAtPosition(pos);
+                    } else
+                        System.out.println("Invalid sub-choice!");
+                    break;
+
+                case 3:
+                    dll.display();
+                    break;
+
+                case 0:
+                    System.out.println("Exiting...");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+
+        } while (mainChoice != 0);
+
+        sc.close();
+    }
+}
