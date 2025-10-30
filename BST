@@ -1,0 +1,131 @@
+import java.util.Scanner;
+
+class Node {
+    int key;
+    Node left, right;
+    Node(int item) {
+        key = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    private Node root;
+
+    public void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    public void delete(int key) {
+        root = deleteRec(root, key);
+    }
+
+    public boolean search(int key) {
+        return searchRec(root, key) != null;
+    }
+
+    public void inorder() {
+        inorderRec(root);
+        System.out.println();
+    }
+
+    public void preorder() {
+        preorderRec(root);
+        System.out.println();
+    }
+
+    private Node insertRec(Node node, int key) {
+        if (node == null) return new Node(key);
+        if (key < node.key)
+            node.left = insertRec(node.left, key);
+        else if (key > node.key)
+            node.right = insertRec(node.right, key);
+        return node;
+    }
+
+    private Node searchRec(Node node, int key) {
+        if (node == null) return null;
+        if (key == node.key) return node;
+        if (key < node.key) return searchRec(node.left, key);
+        return searchRec(node.right, key);
+    }
+
+    private Node deleteRec(Node node, int key) {
+        if (node == null) return node;
+        if (key < node.key)
+            node.left = deleteRec(node.left, key);
+        else if (key > node.key)
+            node.right = deleteRec(node.right, key);
+        else {
+            if (node.left == null) return node.right;
+            else if (node.right == null) return node.left;
+            node.key = minValue(node.right);
+            node.right = deleteRec(node.right, node.key);
+        }
+        return node;
+    }
+
+    private int minValue(Node node) {
+        int minv = node.key;
+        while (node.left != null) {
+            node = node.left;
+            minv = node.key;
+        }
+        return minv;
+    }
+
+    private void inorderRec(Node node) {
+        if (node != null) {
+            inorderRec(node.left);
+            System.out.print(node.key + " ");
+            inorderRec(node.right);
+        }
+    }
+
+    private void preorderRec(Node node) {
+        if (node != null) {
+            System.out.print(node.key + " ");
+            preorderRec(node.left);
+            preorderRec(node.right);
+        }
+    }
+}
+
+public class BSTProgram {
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
+        Scanner sc = new Scanner(System.in);
+        while (true) {
+            System.out.println("1.Insert  2.Delete  3.Search  4.Inorder  5.Preorder  6.Exit");
+            int ch = sc.nextInt();
+            switch (ch) {
+                case 1:
+                System.out.println("Enter the number to insert");
+                    int v1 = sc.nextInt();
+                    bst.insert(v1);
+                    break;
+                case 2:
+                System.out.println("Enter the number to delete");
+                    int v2 = sc.nextInt();
+                    bst.delete(v2);
+                    break;
+                case 3:
+                  System.out.println("Enter the element to search");
+                    int v3 = sc.nextInt();
+                    System.out.println(bst.search(v3) ? "Found" : "Not found");
+                    break;
+                case 4:
+              System.out.print("Inorder traversal:");
+                    bst.inorder();
+                    break;
+                case 5:
+                  System.out.print("Preorder traversal:");
+                    bst.preorder();
+                    break;
+                case 6:
+                    sc.close();
+                    return;
+            }
+        }
+    }
+}
