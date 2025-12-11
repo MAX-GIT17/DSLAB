@@ -1,0 +1,87 @@
+import java.util.*;
+class Polynomial
+{
+public static void main(String args[])
+{
+int a[]=new int[30];
+int b[]=new int[30];
+int sum[]=new int[30];
+int i=0,j=0;
+int p=0;
+Scanner sc=new Scanner(System.in);
+System.out.println("Enter degree of First polynomial");
+int n1=sc.nextInt();
+System.out.println("Enter degree of second polynomial");
+int n2=sc.nextInt();
+
+System.out.println("Enter Coeff of First polynomial");
+for(i=0;i<=n1;i++)
+a[i]=sc.nextInt();
+System.out.println("Enter Coeff of second polynomial");
+for(i=0;i<=n2;i++)
+b[i]=sc.nextInt();
+
+if(n1==n2)
+{
+p=n1;
+System.out.println("Sum is ");
+for(i=0;i<=n1;i++)
+{
+sum[i]=a[i]+b[i];
+System.out.println(sum[i]+"x^"+p+"+");
+p--;
+}}
+
+else if(n1>n2)
+{
+System.out.println("Sum is ");
+p=n1;
+while(n1!=n2)
+{
+sum[j]=a[j];
+n1--;
+j++;
+}
+i=0;
+while(j<n2)
+{
+sum[j]=a[j]+b[i];
+i++;
+j++;
+}
+p=n1;
+for(i=0;i<=n1;i++)
+{
+System.out.println(sum[i]+"x^"+p+"+");
+p--;
+}
+}
+
+else if(n2>n1)
+{
+System.out.println("Sum is ");
+p=n2;
+j=0;
+while(p>n1)
+{
+sum[j]=a[j];
+p--;
+j++;
+}
+i=0;
+while(j<=n2)
+{
+sum[j]=a[i]+b[j];
+i++;
+j++;
+}
+p=n2;
+for(i=0;i<=n2;i++)
+{
+System.out.println(sum[i]+"x^"+p+"+");
+p--;
+}
+}
+
+}
+}
