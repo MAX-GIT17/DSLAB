@@ -36,10 +36,10 @@ else if(n1>n2)
 {
 System.out.println("Sum is ");
 p=n1;
-while(n1!=n2)
+while(p!=n2)
 {
 sum[j]=a[j];
-n1--;
+p--;
 j++;
 }
 i=0;
