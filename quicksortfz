@@ -1,0 +1,55 @@
+import java.util.*;
+
+public class quick {
+    public static void quick(int[] a, int leftend, int rightend) {
+        if (leftend < rightend) {
+            int point = partition(a, leftend, rightend);
+            quick(a, leftend, point);
+            quick(a, point + 1, rightend);
+        }
+    }
+
+    public static int partition(int[] a, int leftend, int rightend) {
+        int pivot = a[leftend];
+        int low = leftend - 1;
+        int high = rightend + 1;
+
+        while (true) {
+            do {
+                high--;
+            } while (a[high] > pivot);
+
+            do {
+                low++;
+            } while (a[low] < pivot);
+
+            if (low < high) {
+                int temp = a[low];
+                a[low] = a[high];
+                a[high] = temp;
+            } else {
+                return high;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int[] array = new int[100];
+
+        System.out.println("Enter the no. of elements:");
+        int size = sc.nextInt();
+
+        System.out.println("Enter the elements to be sorted:");
+        for (int i = 0; i < size; i++) {
+            array[i] = sc.nextInt();
+        }
+
+        quick(array, 0, size - 1);
+
+        System.out.println("Sorted array:");
+        for (int i = 0; i < size; i++) {
+            System.out.print(array[i] + " ");
+        }
+    }
+}
